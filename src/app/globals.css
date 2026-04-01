@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─── 4-Color Design System ────────────────────────────────────────────────────
+   #EFFFFB  Mint White   — dominant background (60%)
+   #50D890  Vivid Green  — primary CTA / accent (10%)
+   #4F98CA  Sky Blue     — secondary / cards (30%)
+   #272727  Charcoal     — text / dark backgrounds
+──────────────────────────────────────────────────────────────────────────────── */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-mint:    #EFFFFB;
+  --color-green:   #50D890;
+  --color-blue:    #4F98CA;
+  --color-dark:    #272727;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-mint-dim:   #D6F8F0;
+  --color-green-dark: #3CC478;
+  --color-blue-dark:  #3A7FAF;
+  --color-dark-soft:  #3A3A3A;
+
+  --font-sans: system-ui, sans-serif;
+
+  @keyframes blob-pulse {
+    0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+    33%       { transform: scale(1.08) translate(2%, -2%); opacity: 0.8; }
+    66%       { transform: scale(0.94) translate(-2%, 3%); opacity: 0.5; }
+  }
+  @keyframes float-up {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-12px); }
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
 }
 
+/* ─── Base ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #EFFFFB;
+  color: #272727;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────────── */
+.glass-mint {
+  background: rgba(239, 255, 251, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(80, 216, 144, 0.2);
+}
+
+.glass-blue {
+  background: rgba(79, 152, 202, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(79, 152, 202, 0.25);
+}
+
+.btn-primary {
+  background: #50D890;
+  color: #272727;
+  font-weight: 900;
+  padding: 0.875rem 2.5rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  box-shadow: 0 6px 24px rgba(80, 216, 144, 0.35);
+  cursor: pointer;
+}
+.btn-primary:hover  { background: #3CC478; transform: scale(1.03); }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-secondary {
+  background: rgba(79, 152, 202, 0.12);
+  color: #272727;
+  font-weight: 700;
+  padding: 0.875rem 2.5rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1.5px solid rgba(79, 152, 202, 0.4);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.btn-secondary:hover { background: rgba(79, 152, 202, 0.22); }
+
+/* Glass card used in motivation section */
+.glass {
+  background: rgba(239, 255, 251, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(80, 216, 144, 0.15);
 }
