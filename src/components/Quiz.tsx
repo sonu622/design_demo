@@ -419,14 +419,6 @@ export default function Quiz() {
                           scrollX: 0,
                           windowWidth: element.scrollWidth,
                           windowHeight: element.scrollHeight
-
-
-
-
-
-
-
-                          
                         });
                         const link = document.createElement('a');
                         link.download = `career-readiness-${Math.round(data.overall)}.png`;
