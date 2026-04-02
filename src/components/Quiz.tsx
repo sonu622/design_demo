@@ -419,6 +419,14 @@ export default function Quiz() {
                           scrollX: 0,
                           windowWidth: element.scrollWidth,
                           windowHeight: element.scrollHeight
+
+
+
+
+
+
+
+                          
                         });
                         const link = document.createElement('a');
                         link.download = `career-readiness-${Math.round(data.overall)}.png`;
@@ -430,7 +438,7 @@ export default function Quiz() {
                     </button>
                     <button 
                       onClick={async () => {
-                        
+
                         const challengeUrl = `${window.location.origin}?challenge=${Math.round(data.overall)}&profile=${encodeURIComponent(data.profile.label)}`;
                         const shareData = {
                           title: 'Beat My Career Readiness Score!',
