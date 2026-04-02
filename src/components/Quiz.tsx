@@ -430,6 +430,7 @@ export default function Quiz() {
                     </button>
                     <button 
                       onClick={async () => {
+                        
                         const challengeUrl = `${window.location.origin}?challenge=${Math.round(data.overall)}&profile=${encodeURIComponent(data.profile.label)}`;
                         const shareData = {
                           title: 'Beat My Career Readiness Score!',
