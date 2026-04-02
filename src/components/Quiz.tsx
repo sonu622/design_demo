@@ -2,350 +2,519 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, CheckCircle2, ChevronRight, RefreshCcw, Trophy } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, RefreshCcw, Trophy, X, Share2, Download, ExternalLink, Minus, Plus, Rocket, Brain } from "lucide-react";
+import Image from "next/image";
+import html2canvas from "html2canvas";
 
-/* ─── Theme ─────────────────────────────────────────────
-   #EFFFFB  Mint    — backgrounds
-   #50D890  Green   — CTAs, selected, progress
-   #4F98CA  Blue    — secondary accents
-   #272727  Dark    — text
-────────────────────────────────────────────────────────── */
+/* ─── Nexthire Theme ────────────────────────────────────────── */
 const C = {
-  mint:      "#EFFFFB",
+  mint:      "#fffffeff", // Creamy White
   green:     "#50D890",
   blue:      "#4F98CA",
   dark:      "#272727",
   greenDark: "#3CC478",
-  mintDim:   "#D6F8F0",
+  mintDim:   "#F7FBF9",
 };
 
-const questions = [
-  {
-    id: 1,
-    question: "How would you rate the current state of your resume / CV?",
-    options: [
-      { text: "ATS-optimised, quantified results, updated this month", score: 4 },
-      { text: "Solid draft — needs a few tweaks", score: 3 },
-      { text: "Outdated or missing key achievements", score: 2 },
-      { text: "No resume ready at all", score: 1 },
-    ],
-  },
-  {
-    id: 2,
-    question: "How strong is your professional network in your target field?",
-    options: [
-      { text: "Robust — I get referrals and warm introductions regularly", score: 4 },
-      { text: "Growing — I attend events and connect on LinkedIn actively", score: 3 },
-      { text: "Thin — mostly former classmates or colleagues", score: 2 },
-      { text: "Non-existent — I have not invested in networking", score: 1 },
-    ],
-  },
-  {
-    id: 3,
-    question: "How prepared are you for a technical or behavioural interview tomorrow?",
-    options: [
-      { text: "Fully prepared — practised STAR answers, mock interviews done", score: 4 },
-      { text: "Mostly ready — know the concepts, need more rehearsal", score: 3 },
-      { text: "Partially ready — I would wing the behavioural sections", score: 2 },
-      { text: "Not ready — interviews make me anxious and I avoid them", score: 1 },
-    ],
-  },
-  {
-    id: 4,
-    question: "Which best describes your current skill-development habit?",
-    options: [
-      { text: "10+ hours/week — actively pursuing certifications and projects", score: 4 },
-      { text: "5–10 hours/week — steady learning through courses or side work", score: 3 },
-      { text: "1–5 hours/week — occasional videos or articles", score: 2 },
-      { text: "Zero — I rely only on experience gained at work", score: 1 },
-    ],
-  },
-  {
-    id: 5,
-    question: "How clear is your job-search strategy right now?",
-    options: [
-      { text: "Crystal clear — target companies listed, outreach scheduled", score: 4 },
-      { text: "Pretty clear — I know the roles I want but no structured plan", score: 3 },
-      { text: "Vague — I mostly scroll job boards and apply randomly", score: 2 },
-      { text: "None — I am not actively searching or planning", score: 1 },
-    ],
-  },
-  {
-    id: 6,
-    question: "How confident are you negotiating salary and benefits?",
-    options: [
-      { text: "Very confident — I research market rates and always negotiate", score: 4 },
-      { text: "Somewhat confident — I negotiate but feel nervous", score: 3 },
-      { text: "Rarely negotiate — I usually accept the first offer", score: 2 },
-      { text: "Never negotiate — I fear losing the offer", score: 1 },
-    ],
-  },
-  {
-    id: 7,
-    question: "How visible is your personal brand online (LinkedIn, portfolio, GitHub, etc.)?",
-    options: [
-      { text: "Strong — I publish content and recruiters reach out to me", score: 4 },
-      { text: "Active — profile is complete and I engage regularly", score: 3 },
-      { text: "Minimal — profile exists but rarely updated", score: 2 },
-      { text: "Invisible — I have no meaningful online presence", score: 1 },
-    ],
-  },
-  {
-    id: 8,
-    question: "Do you have a written 5-year career plan with milestones?",
-    options: [
-      { text: "Yes — detailed plan with quarterly checkpoints", score: 4 },
-      { text: "Partially — a rough vision but no formal milestones", score: 3 },
-      { text: "In my head only — nothing written down", score: 2 },
-      { text: "No — I take it one day at a time", score: 1 },
-    ],
-  },
+/* ─── Assessment Data ────────────────────────────────────────── */
+const DIMENSIONS = [
+  { id: "clarity", name: "Clarity", color: "#4F98CA", desc: "How clear they are on direction and goals (career concern, planning)." },
+  { id: "ownership", name: "Ownership", color: "#50D890", desc: "How much they take control and follow through (career control)." },
+  { id: "curiosity", name: "Curiosity", color: "#F7B84B", desc: "How actively they explore options and learn (career curiosity, self‑development)." },
+  { id: "confidence", name: "Confidence", color: "#9D7BFA", desc: "How confident and resilient they feel in pursuing opportunities." },
+  { id: "network", name: "Network & Visibility", color: "#FF708D", desc: "How well they build relationships and showcase themselves (networking, communication)." },
 ];
 
-const getResult = (answers: number[]) => {
-  const total = answers.reduce((a, b) => a + (b || 0), 0);
-  // 8 questions × max 4 pts = 32 pts total
-  if (total >= 26) return {
-    title: "Career Architect",
-    description: "You are operating at an elite level. Your resume, network, interview skills, and long-term vision are all sharp. Keep compounding your edge and target the next level role.",
-    accent: C.green,
-    cta: "Scale Your Impact →",
+const questions = [
+  // CLARITY
+  { dim: "clarity", q: "I can describe the kind of work I want to be doing in the next 3 years in one clear sentence." },
+  { dim: "clarity", q: "I know which skills I must build in the next 12 months to reach my next role." },
+  { dim: "clarity", q: "I regularly review my career direction instead of just 'seeing what happens'." },
+  { dim: "clarity", q: "In the past 30 days, I have spent at least 2 hours refining my career roadmap." }, // Behavioral receipt
+
+  // OWNERSHIP
+  { dim: "ownership", q: "In the last 90 days, I’ve taken a specific action (course, project, application) to move my career forward." },
+  { dim: "ownership", q: "If I feel stuck at work, I create options instead of waiting for my manager or company to fix it." },
+  { dim: "ownership", q: "I track my achievements so I can clearly show my impact." },
+  { dim: "ownership", q: "In the last 6 months, I have initiated a conversation about my growth with a mentor/leader." }, // Behavioral receipt
+
+  // CURIOSITY
+  { dim: "curiosity", q: "I consistently seek out new information about my industry or roles I’m interested in." },
+  { dim: "curiosity", q: "I talk to people in roles I aspire to, even if it feels uncomfortable at first." },
+  { dim: "curiosity", q: "I treat my career like an experiment and regularly try small tests (side projects, stretch tasks, etc.)." },
+  { dim: "curiosity", q: "In the past 30 days, I have reached out to someone new in my field to learn from them." }, // Behavioral receipt
+
+  // CONFIDENCE
+  { dim: "confidence", q: "I believe my skills will stay valuable even if my current role disappeared tomorrow." },
+  { dim: "confidence", q: "Rejection (e.g., from an application or promotion) motivates me to adjust and try again." },
+  { dim: "confidence", q: "I feel comfortable asking for promotions, raises, or new opportunities when I’m ready." },
+  { dim: "confidence", q: "I have applied for a 'stretch' role in the last 12 months that I felt 70% qualified for." }, // Behavioral receipt
+
+  // NETWORK & VISIBILITY
+  { dim: "network", q: "I have at least 3–5 people I could message today for advice or referrals related to my next move." },
+  { dim: "network", q: "My online presence (e.g., LinkedIn, portfolio, social) clearly reflects the kind of roles I want." },
+  { dim: "network", q: "I intentionally add value to my network (sharing insights, connections, support), not just ask for help." },
+  { dim: "network", q: "In the past 30 days, I have actively engaged with at least 3 professionals outside my company." }, // Behavioral receipt
+];
+
+const LIKERT = [
+  { label: "Strongly Disagree", val: 1 },
+  { label: "Disagree", val: 2 },
+  { label: "Neutral", val: 3 },
+  { label: "Agree", val: 4 },
+  { label: "Strongly Agree", val: 5 },
+];
+
+/* ─── Profile Labels ────────────────────────────────────────── */
+const getProfileLabel = (score: number, topDimId: string) => {
+  const archetypes: Record<string, string> = {
+    clarity: "Visionary Planner",
+    ownership: "Strategic Driver",
+    curiosity: "Curious Explorer",
+    confidence: "Resilient Leap-Taker",
+    network: "Connector"
   };
-  if (total >= 18) return {
-    title: "Career Ready",
-    description: "You have strong foundations but a few gaps holding you back — likely around salary negotiation, online visibility, or structured job-search strategy. Close those gaps now.",
-    accent: C.blue,
-    cta: "Refine Your Plan →",
-  };
-  if (total >= 10) return {
-    title: "Building Momentum",
-    description: "You have potential but your career toolkit needs significant attention. Prioritise your resume, LinkedIn profile, and building a targeted company list before your next move.",
-    accent: C.blue,
-    cta: "Build Your Roadmap →",
-  };
-  return {
-    title: "Starting Line",
-    description: "Your career readiness needs foundational work. Start with the basics: an updated resume, a complete LinkedIn profile, and a clear idea of the role you want next.",
-    accent: C.green,
-    cta: "Get the Starter Guide →",
-  };
+  
+  const baseLabel = archetypes[topDimId] || "Hidden Star";
+  
+  if (score >= 75) return `High Performance ${baseLabel}`;
+  if (score >= 50) return `Steady ${baseLabel}`;
+  return `Emerging ${baseLabel}`;
+};
+
+const getDimensionCategory = (score: number) => {
+  if (score >= 75) return "Strong";
+  if (score >= 50) return "Solid";
+  return "Low";
 };
 
 export default function Quiz() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers]         = useState<number[]>([]);
-  const [isFinished, setIsFinished]   = useState(false);
-  const [isLoaded, setIsLoaded]       = useState(false);
+  const [phase, setPhase]             = useState<"onboarding" | "questions" | "results">("onboarding");
+  const [onboarding, setOnboarding]   = useState({ role: "", goal: "" });
+  const [currentIdx, setCurrentIdx]   = useState(0);
+  const [answers, setAnswers]         = useState<number[]>(new Array(questions.length).fill(0));
+  const [challengeData, setChallengeData] = useState<{ score: number, profile: string } | null>(null);
+  const [timestamp, setTimestamp]     = useState("");
 
   useEffect(() => {
-    const saved = localStorage.getItem("career-quiz-state");
-    if (saved) {
-      try {
-        const { step, answers, finished } = JSON.parse(saved);
-        setCurrentStep(step ?? 0);
-        setAnswers(answers ?? []);
-        setIsFinished(finished ?? false);
-      } catch (e) { console.error("Failed to load quiz state", e); }
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const challenge = params.get("challenge");
+      const profile = params.get("profile");
+      if (challenge && profile) {
+        setChallengeData({ score: parseInt(challenge), profile: profile });
+      }
+      
+      if (phase === 'results') {
+        const now = new Date();
+        setTimestamp(now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }));
+      }
     }
-    setIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem("career-quiz-state", JSON.stringify({
-        step: currentStep, answers, finished: isFinished,
-      }));
-    }
-  }, [currentStep, answers, isFinished, isLoaded]);
-
-  const handleAnswerSelection = (score: number) => {
+  }, [phase]);
+  
+  const handleOnboarding = (key: string, val: string) => setOnboarding(p => ({ ...p, [key]: val }));
+  
+  const handleAnswer = (val: number) => {
     const next = [...answers];
-    next[currentStep] = score;
+    next[currentIdx] = val;
     setAnswers(next);
-  };
-
-  const handleNext = () => {
-    if (answers[currentStep] !== undefined) {
-      if (currentStep < questions.length - 1) setCurrentStep(currentStep + 1);
-      else setIsFinished(true);
+    if (currentIdx < questions.length - 1) {
+      setCurrentIdx(currentIdx + 1);
+    } else {
+      setPhase('results');
     }
   };
 
-  const resetQuiz = () => {
-    setCurrentStep(0); setAnswers([]); setIsFinished(false);
-    localStorage.removeItem("career-quiz-state");
+  const getResultsData = () => {
+    const dimScores: Record<string, number> = {};
+    DIMENSIONS.forEach(d => {
+      const dimQs = questions.filter(q => q.dim === d.id);
+      const total = dimQs.reduce((acc, q) => {
+        const qIdx = questions.indexOf(q);
+        return acc + (answers[qIdx] || 0);
+      }, 0);
+      dimScores[d.id] = (total / (dimQs.length * 5)) * 100;
+    });
+    
+    // Weighted Average: Ownership & Clarity 1.2x
+    const weights: Record<string, number> = {
+      clarity: 1.2,
+      ownership: 1.2,
+      curiosity: 1.0,
+      confidence: 1.0,
+      network: 1.0
+    };
+
+    let totalWeightedScore = 0;
+    let totalWeight = 0;
+
+    DIMENSIONS.forEach(d => {
+      const w = weights[d.id] || 1.0;
+      totalWeightedScore += dimScores[d.id] * w;
+      totalWeight += w;
+    });
+
+    const overall = totalWeightedScore / totalWeight;
+    const sortedDims = [...DIMENSIONS].sort((a,b) => dimScores[b.id] - dimScores[a.id]);
+    const topDim = sortedDims[0];
+    const lowestDim = sortedDims[sortedDims.length - 1];
+    
+    // Dimension Categories for the "Career Profile" string
+    const topDimCat = getDimensionCategory(dimScores[topDim.id]);
+    const lowDimCat = getDimensionCategory(dimScores[lowestDim.id]);
+    
+    const profileLabel = getProfileLabel(overall, topDim.id);
+    const shortSummary = `${topDimCat} ${topDim.name}, ${lowDimCat} ${lowestDim.name}`;
+
+    return { 
+      overall, 
+      dimScores, 
+      topDim, 
+      lowestDim,
+      profile: { label: profileLabel, summary: shortSummary },
+      band: overall >= 75 ? "High" : overall >= 50 ? "Medium" : "Low"
+    };
   };
 
-  if (!isLoaded) return null;
+  /* ─── RENDERING ───────────────────────────────────────────── */
 
-  /* ─── Results Screen ─────────────────────────────────── */
-  if (isFinished) {
-    const result = getResult(answers);
-    return (
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-        className="rounded-3xl p-8 md:p-12 text-center relative overflow-hidden"
-        style={{ background: C.mint, border: `1.5px solid ${C.green}40`,
-          boxShadow: `0 20px 60px ${C.green}20` }}>
-
-        {/* Top accent bar */}
-        <div className="absolute top-0 left-0 w-full h-1.5 rounded-t-3xl"
-          style={{ background: `linear-gradient(90deg, ${C.green}, ${C.blue})` }} />
-
-        {/* Glow */}
-        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-20 pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${result.accent}, transparent)`, filter: "blur(50px)" }} />
-
-        {/* Trophy icon */}
-        <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg relative z-10"
-          style={{ background: `linear-gradient(135deg, ${C.green}30, ${C.blue}25)`,
-            border: `1.5px solid ${result.accent}50` }}>
-          <Trophy size={34} style={{ color: result.accent }} />
+  if (phase === "onboarding") return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8">
+      {challengeData && (
+        <div className="mb-8 p-6 rounded-3xl bg-blue/5 border border-blue/10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-blue flex items-center justify-center text-white font-black italic shadow-lg">!</div>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-blue mb-1">Challenge Accepted</p>
+            <p className="text-sm font-bold text-dark/70 italic">A <span className="text-blue">{challengeData.profile}</span> (Score: {challengeData.score}) has challenged you! Can you beat them?</p>
+          </div>
+        </div>
+      )}
+      <h2 className="text-4xl font-bold text-dark mb-4 tracking-tighter">Personalize Your Path</h2>
+      <p className="text-dark/40 mb-10 font-medium tracking-tight">Answer a few details so we can tailor your results.</p>
+      
+      <div className="space-y-8">
+        <div>
+          <label className="text-xs font-bold uppercase tracking-widest text-dark/30 block mb-4">Current Role Level</label>
+          <div className="flex flex-wrap gap-3">
+            {["Student", "Early Career", "Mid Level", "Senior"].map(l => (
+              <button key={l} onClick={() => handleOnboarding("role", l)}
+                className={`px-6 py-3 rounded-2xl text-sm font-bold border-2 transition-all ${onboarding.role === l ? "bg-blue text-white border-blue shadow-lg" : "bg-white text-dark/60 border-dark/5 hover:border-dark/10"}`}>
+                {l}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <p className="text-[9px] font-black tracking-[0.4em] uppercase mb-2 relative z-10"
-          style={{ color: C.greenDark }}>Assessment Complete</p>
+        <div>
+          <label className="text-xs font-bold uppercase tracking-widest text-dark/30 block mb-4">Main Career Goal</label>
+          <div className="flex flex-wrap gap-3">
+            {["Grow in Role", "Career Pivot", "Leadership", "Starting Up"].map(g => (
+              <button key={g} onClick={() => handleOnboarding("goal", g)}
+                className={`px-6 py-3 rounded-2xl text-sm font-bold border-2 transition-all ${onboarding.goal === g ? "bg-blue text-white border-blue shadow-lg" : "bg-white text-dark/60 border-dark/5 hover:border-dark/10"}`}>
+                {g}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <h3 className="text-3xl md:text-5xl font-black mb-4 uppercase tracking-tighter relative z-10"
-          style={{ color: C.dark }}>{result.title}</h3>
-
-        <p className="text-sm mb-10 max-w-xl mx-auto leading-relaxed font-semibold uppercase tracking-tight relative z-10"
-          style={{ color: `${C.dark}70` }}>
-          {result.description}
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center relative z-10">
-          <button className="flex items-center justify-center gap-2 font-black uppercase tracking-[0.2em] text-[10px] rounded-xl px-8 py-4 transition-all hover:scale-105 active:scale-95 shadow-lg group"
-            style={{ background: C.green, color: C.dark, boxShadow: `0 6px 24px ${C.green}50` }}>
-            {result.cta}
-            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        <div className="pt-8 flex justify-end">
+          <button onClick={() => onboarding.role && onboarding.goal && setPhase("questions")}
+            disabled={!onboarding.role || !onboarding.goal}
+            className="btn-primary px-10 py-5 rounded-full disabled:opacity-30 disabled:cursor-not-allowed group">
+            Start Assessment <ArrowRight className="group-hover:translate-x-1 transition-transform" />
           </button>
-          <button onClick={resetQuiz}
-            className="flex items-center justify-center gap-2 font-black uppercase tracking-[0.2em] text-[10px] rounded-xl px-8 py-4 transition-all hover:scale-105"
-            style={{ background: `${C.blue}15`, color: C.dark, border: `1px solid ${C.blue}40` }}>
-            <RefreshCcw size={14} /> Retake
-          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  if (phase === "questions") {
+    const q = questions[currentIdx];
+    const progress = ((currentIdx + 1) / questions.length) * 100;
+    const currentDimName = DIMENSIONS.find(d => d.id === q.dim)?.name;
+
+    return (
+      <div className="p-8 md:p-12 min-h-[500px] flex flex-col justify-between">
+        <div>
+          <div className="flex items-center justify-between mb-12">
+             <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue/10 flex items-center justify-center text-blue font-bold">
+                  {currentIdx + 1}
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-dark/30">{currentDimName}</p>
+                  <p className="text-xs font-bold text-blue tracking-tighter">Dimension Focus</p>
+                </div>
+             </div>
+             <div className="w-48">
+                <div className="h-1.5 w-full bg-dark/5 rounded-full overflow-hidden">
+                  <motion.div animate={{ width: `${progress}%` }} className="h-full bg-blue" />
+                </div>
+                <p className="text-[9px] font-bold text-dark/20 mt-1 text-right italic">{Math.round(progress)}% Complete</p>
+             </div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div key={currentIdx} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <h3 className="text-2xl md:text-3xl font-bold text-dark mb-12 leading-tight tracking-tighter">
+                &ldquo;{q.q}&rdquo;
+              </h3>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                {LIKERT.map(l => {
+                  const isSelected = answers[currentIdx] === l.val;
+                  const activeColor = 
+                    l.val === 1 ? "#FF5F5F" : // Strongly Disagree
+                    l.val === 2 ? "#FFBD69" : // Disagree
+                    l.val === 3 ? "#4F98CA" : // Neutral
+                    l.val === 4 ? "#8DDA97" : // Agree
+                    "#50D890";                // Strongly Agree
+
+                  return (
+                    <button key={l.val} onClick={() => handleAnswer(l.val)}
+                      className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all hover:scale-[1.03] bg-white group ${isSelected ? "" : "border-dark/5"}`}
+                      style={{ 
+                        borderColor: isSelected ? activeColor : undefined, 
+                        boxShadow: isSelected ? `0 10px 25px -5px ${activeColor}40` : undefined,
+                        '--hover-border': activeColor,
+                        '--hover-bg': `${activeColor}10`,
+                        '--hover-icon': activeColor
+                      } as any}>
+                      
+                      <style jsx>{`
+                        button:hover { 
+                          border-color: var(--hover-border) !important;
+                          background-color: var(--hover-bg) !important;
+                        }
+                        button:hover .icon-dot {
+                          border-color: var(--hover-icon) !important;
+                          background-color: var(--hover-icon) !important;
+                          opacity: 0.3;
+                        }
+                      `}</style>
+
+                      <div className={`icon-dot w-4 h-4 rounded-full border-2 mb-3 transition-colors ${isSelected ? "" : "border-dark/10"}`} 
+                           style={{ borderColor: isSelected ? activeColor : undefined, background: isSelected ? activeColor : undefined }} />
+                      <span className={`text-[10px] font-bold text-center uppercase tracking-tighter leading-tight transition-colors ${isSelected ? "text-dark" : "text-dark/40 group-hover:text-dark"}`}
+                            style={{ color: isSelected ? activeColor : undefined }}>
+                        {l.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="flex justify-between items-center pt-10 border-t border-dark/5">
+           <button onClick={() => currentIdx > 0 && setCurrentIdx(currentIdx - 1)}
+             className="text-xs font-bold text-dark/30 hover:text-dark flex items-center gap-2 transition-colors">
+             <ArrowLeft size={16} /> Previous Question
+           </button>
+           <p className="text-[10px] font-bold text-dark/20 uppercase tracking-widest italic">Be honest with yourself.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === "results") {
+    const data = getResultsData();
+
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-8 md:p-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-16 items-start">
+            
+            {/* Left: Result Card (Social-Media Friendly) */}
+            <div className="w-full lg:w-1/2">
+              <div id="result-card" className="bg-white p-10 rounded-[3.5rem] border relative overflow-hidden group aspect-[1080/1600] flex flex-col justify-between" 
+                   style={{ 
+                     borderColor: 'rgba(39, 39, 39, 0.05)',
+                     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)'
+                   }}>
+                <div className="absolute top-0 right-0 w-64 h-64 rounded-full -translate-y-1/2 translate-x-1/2 blur-[80px]" style={{ background: 'rgba(79, 152, 202, 0.05)' }} />
+                <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full translate-y-1/2 -translate-x-1/2 blur-[80px]" style={{ background: 'rgba(80, 216, 144, 0.05)' }} />
+                
+                <div className="relative z-10">
+                  <p className="text-[10px] font-bold uppercase tracking-widest mb-8 flex items-center gap-2" style={{ color: 'rgba(39, 39, 39, 0.3)' }}>
+                    <Rocket size={12} style={{ color: '#4F98CA' }} /> Career Readiness Protocol
+                  </p>
+                  
+                  <div className="mb-10">
+                    <div className="flex items-end gap-2 mb-2">
+                       <h2 className="text-8xl font-black tracking-tighter leading-none italic" style={{ color: '#272727' }}>{Math.round(data.overall)}</h2>
+                       <span className="text-2xl font-bold mb-2" style={{ color: 'rgba(39, 39, 39, 0.2)' }}>/ 100</span>
+                    </div>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 pt-2 rounded-full text-[16px] font-bold tracking-tighter uppercase" 
+                         style={{ 
+                           backgroundColor: data.band === "High" ? 'rgba(202, 216, 80, 0.2)' : data.band === "Medium" ? 'rgba(79, 152, 202, 0.2)' : 'rgba(39, 39, 39, 0.05)',
+                           color: data.band === "High" ? '#3CC478' : data.band === "Medium" ? '#4F98CA' : 'rgba(39, 39, 39, 0.4)'
+                         }}>
+                      <Trophy size={14} /> {data.band} Readiness
+                    </div>
+                  </div>
+
+                  <div className="pt-8 mb-10" style={{ borderTop: '1px solid rgba(39, 39, 39, 0.05)' }}>
+                    <h4 className="text-3xl font-bold mb-2 tracking-tighter" style={{ color: '#272727' }}>{data.profile.label}</h4>
+                    <p className="text-sm font-bold uppercase tracking-tight" style={{ color: 'rgba(39, 39, 39, 0.4)' }}>{data.profile.summary}</p>
+                  </div>
+
+                  <div className="space-y-4 mb-10">
+                    {DIMENSIONS.map(d => (
+                      <div key={d.id} className="space-y-1.5">
+                        <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-tighter">
+                          <span style={{ color: 'rgba(39, 39, 39, 0.3)' }}>{d.name}</span>
+                          <span style={{ color: '#272727' }}>{Math.round(data.dimScores[d.id])}%</span>
+                        </div>
+                        <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(39, 39, 39, 0.05)' }}>
+                           <motion.div initial={{ width: 0 }} animate={{ width: `${data.dimScores[d.id]}%` }} className="h-full rounded-full" style={{ background: d.color }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-8" style={{ borderTop: '1px solid rgba(39, 39, 39, 0.05)' }}>
+                    <div className="flex flex-col items-start gap-1">
+                      <p className="text-[10px] font-bold uppercase tracking-widest italic" style={{ color: 'rgba(39, 39, 39, 0.2)' }}>nxt-hr.io/readiness</p>
+                      <p className="text-xs font-bold uppercase tracking-tight" style={{ color: '#272727' }}>{timestamp}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4 mt-8">
+                 <button onClick={async () => {
+                   const shareData = {
+                     title: 'My Career Readiness Score',
+                     text: `My Career Readiness Score is ${Math.round(data.overall)}/100 – apparently I’m a ${data.profile.label}. What's yours?`,
+                     url: window.location.origin
+                   };
+                   
+                   if (navigator.share && navigator.canShare(shareData)) {
+                     try {
+                       await navigator.share(shareData);
+                     } catch (err) {
+                       console.log("Share failed:", err);
+                     }
+                   } else {
+                     const text = `${shareData.text} Check yours at: ${shareData.url}`;
+                     navigator.clipboard.writeText(text);
+                     alert("Results and link copied to clipboard! Ready to share on your story.");
+                   }
+                 }} className="btn-primary py-5 rounded-2xl flex items-center justify-center gap-3 w-full text-lg">
+                   <Share2 size={20} /> Share My Story
+                 </button>
+                 <div className="grid grid-cols-2 gap-4">
+                    <button 
+                      onClick={async () => {
+                        const element = document.getElementById('result-card');
+                        if (!element) return;
+                        const canvas = await html2canvas(element, { 
+                          backgroundColor: '#ffffffff', 
+                          scale: 3,
+                          useCORS: true,
+                          allowTaint: true,
+                          scrollY: 0,
+                          scrollX: 0,
+                          windowWidth: element.scrollWidth,
+                          windowHeight: element.scrollHeight
+                        });
+                        const link = document.createElement('a');
+                        link.download = `career-readiness-${Math.round(data.overall)}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                      }}
+                      className="bg-blue text-white py-4 rounded-2xl flex items-center justify-center gap-3 text-sm font-black shadow-lg hover:bg-blue/90 transition-all border-none">
+                      <Download size={18} /> Save Career Report
+                    </button>
+                    <button 
+                      onClick={async () => {
+                        const challengeUrl = `${window.location.origin}?challenge=${Math.round(data.overall)}&profile=${encodeURIComponent(data.profile.label)}`;
+                        const shareData = {
+                          title: 'Beat My Career Readiness Score!',
+                          text: `I scored ${Math.round(data.overall)}% on the Career Readiness Assessment. Can you beat me?`,
+                          url: challengeUrl
+                        };
+                        
+                        if (navigator.share && navigator.canShare(shareData)) {
+                          try {
+                            await navigator.share(shareData);
+                          } catch (err) {
+                            console.log("Challenge share failed:", err);
+                          }
+                        } else {
+                          navigator.clipboard.writeText(challengeUrl);
+                          alert("Challenge link copied! Send it to a friend to see if they can beat your score.");
+                        }
+                      }}
+                      className="bg-white border-2 border-dark/5 py-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold text-dark/60 hover:border-blue/20 transition-all">
+                      <ExternalLink size={16} /> Challenge a Friend
+                    </button>
+                 </div>
+              </div>
+            </div>
+
+            {/* Right: Insight & Action */}
+            <div className="w-full lg:w-1/2 space-y-12">
+               <div>
+                 <h4 className="text-xs font-bold uppercase tracking-widest text-dark/20 mb-6">Strategic Insight</h4>
+                 <div className="bg-dark text-white p-8 rounded-[3rem] shadow-xl relative overflow-hidden">
+                   <div className="absolute top-0 right-0 p-4 opacity-10">
+                     <Brain size={48} />
+                   </div>
+                   <p className="text-lg font-bold mb-4 tracking-tight">Your {data.lowestDim.name} is a key growth lever.</p>
+                   <p className="text-sm opacity-60 leading-relaxed font-medium">
+                     Your score suggests that while you have strengths, focusing on {data.lowestDim.name.toLowerCase()} will unlock the most significant career acceleration. 
+                     People with this profile often feel a "ceiling" that can be broken by {data.lowestDim.id === 'network' ? 'expanding high-value connections' : 'sharpening their specific career goals'}.
+                   </p>
+                 </div>
+               </div>
+
+               <div>
+                 <h4 className="text-xs font-bold uppercase tracking-widest text-dark/20 mb-6">Personalized Action Plan</h4>
+                 <ul className="space-y-6">
+                    {(data.lowestDim.id === 'clarity' ? [
+                      "Draft your '3-Year North Star' in a single, punchy sentence.",
+                      "List 5 specific technical skills you need to reach the next salary band.",
+                      "Schedule a 'Vision Audit' with a mentor to test your goal realism."
+                    ] : data.lowestDim.id === 'ownership' ? [
+                      "Start an 'Impact Log' to track one quantified win every single Friday.",
+                      "Identify a project at work you can take full end-to-end lead on.",
+                      "Set a recurring calendar invite for 'CEO-of-Me' career strategy time."
+                    ] : data.lowestDim.id === 'curiosity' ? [
+                      "Set up 2 Google Alerts for your target industry's emerging trends.",
+                      "Cold-message one professional in a 'dream role' for a 15-min chat.",
+                      "Treat your next month as an experiment: try one new tool or workflow."
+                    ] : data.lowestDim.id === 'confidence' ? [
+                      "Practice your 'Value Proposition' pitch in front of a mirror (60s).",
+                      "Apply for one 'stretch role' even if you feel underqualified.",
+                      "Ask for feedback on your greatest strength from 3 trusted peers."
+                    ] : [
+                      "Message 3 old colleagues just to offer value or a quick catch-up.",
+                      "Optimize your LinkedIn headline for your *next* role, not your current one.",
+                      "Join one high-signal professional community orSlack group this week."
+                    ]).map((step, i) => (
+                      <li key={i} className="flex gap-4 items-start group">
+                        <div className="w-8 h-8 rounded-xl bg-blue/10 text-blue flex items-center justify-center text-xs font-bold shrink-0 group-hover:bg-blue group-hover:text-white transition-colors">{i+1}</div>
+                        <p className="text-sm font-bold text-dark tracking-tight leading-snug pt-1.5">{step}</p>
+                      </li>
+                    ))}
+                 </ul>
+               </div>
+
+               <div className="flex items-center justify-between pt-8 border-t border-dark/5">
+                 <button onClick={() => setPhase("onboarding")} className="text-xs font-bold text-dark/30 hover:text-dark flex items-center gap-2">
+                   <RefreshCcw size={14} /> Retake Assessment
+                 </button>
+                 <p className="text-[10px] font-bold text-dark/20 uppercase tracking-widest">Share to challenge others</p>
+               </div>
+            </div>
+          </div>
         </div>
       </motion.div>
     );
   }
 
-  /* ─── Question Screen ────────────────────────────────── */
-  const currentQuestion = questions[currentStep];
-  const progress        = ((currentStep + 1) / questions.length) * 100;
-  const isAnswered      = answers[currentStep] !== undefined;
-
-  return (
-    <div className="rounded-3xl p-6 md:p-10 relative overflow-hidden"
-      style={{ background: C.mint, border: `1.5px solid ${C.green}30`,
-        boxShadow: `0 16px 50px ${C.green}18` }}>
-
-      {/* Top gradient line */}
-      <div className="absolute top-0 left-0 w-full h-1 rounded-t-3xl"
-        style={{ background: `linear-gradient(90deg, ${C.green}, ${C.blue})` }} />
-
-      {/* Background glow */}
-      <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-15 pointer-events-none -translate-y-1/2 translate-x-1/2"
-        style={{ background: `radial-gradient(circle, ${C.blue}, transparent)`, filter: "blur(60px)" }} />
-
-      {/* Header: step counter + progress */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 relative z-10 gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-black shadow-md text-base"
-            style={{ background: `linear-gradient(135deg, ${C.green}, ${C.greenDark})`, color: C.dark }}>
-            0{currentStep + 1}
-          </div>
-          <div>
-            <p className="text-[9px] font-black uppercase tracking-[0.4em] mb-0.5"
-              style={{ color: `${C.dark}40` }}>Step {currentStep + 1} of {questions.length}</p>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em]"
-              style={{ color: C.blue }}>Precision Assessment</p>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="w-full md:w-48">
-          <div className="h-2 rounded-full overflow-hidden" style={{ background: `${C.green}20` }}>
-            <motion.div initial={{ width: 0 }} animate={{ width: `${progress}%` }}
-              className="h-full rounded-full"
-              style={{ background: `linear-gradient(90deg, ${C.green}, ${C.blue})`,
-                boxShadow: `0 0 10px ${C.green}60` }} />
-          </div>
-          <p className="text-[8px] font-bold mt-1 text-right" style={{ color: `${C.dark}40` }}>
-            {Math.round(progress)}% complete
-          </p>
-        </div>
-      </div>
-
-      {/* Question + Options */}
-      <AnimatePresence mode="wait">
-        <motion.div key={currentStep}
-          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.35, ease: "easeOut" }}
-          className="relative z-10">
-
-          <h2 className="text-xl md:text-2xl font-black mb-6 leading-tight tracking-tighter uppercase"
-            style={{ color: C.dark }}>
-            {currentQuestion.question}
-          </h2>
-
-          <div className="grid grid-cols-1 gap-3 mb-8">
-            {currentQuestion.options.map((option, idx) => {
-              const isSelected = answers[currentStep] === option.score;
-              return (
-                <motion.button key={idx} whileHover={{ x: 4 }} whileTap={{ scale: 0.98 }}
-                  onClick={() => handleAnswerSelection(option.score)}
-                  className="w-full text-left p-4 rounded-2xl flex items-center justify-between gap-4 transition-all group"
-                  style={{
-                    background: isSelected ? `${C.green}20` : `rgba(255,255,255,0.6)`,
-                    border: `1.5px solid ${isSelected ? C.green : `rgba(80,216,144,0.2)`}`,
-                    boxShadow: isSelected ? `0 4px 16px ${C.green}25` : "none",
-                  }}>
-                  <span className="text-sm font-bold uppercase tracking-tight transition-colors"
-                    style={{ color: isSelected ? C.dark : `${C.dark}70` }}>
-                    {option.text}
-                  </span>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {isSelected && <CheckCircle2 size={16} style={{ color: C.green }} />}
-                    <div className="w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all"
-                      style={{ borderColor: isSelected ? C.green : `${C.dark}20`,
-                        background: isSelected ? `${C.green}15` : "transparent" }}>
-                      {isSelected && <div className="w-2 h-2 rounded-full" style={{ background: C.green }} />}
-                    </div>
-                  </div>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Footer nav */}
-          <div className="flex flex-row gap-4 items-center justify-between pt-4"
-            style={{ borderTop: `1px solid ${C.green}20` }}>
-            <button onClick={() => currentStep > 0 && setCurrentStep(currentStep - 1)}
-              disabled={currentStep === 0}
-              className="flex items-center gap-2 font-black uppercase tracking-[0.3em] text-[10px] transition-all disabled:opacity-0"
-              style={{ color: `${C.dark}50` }}
-              onMouseEnter={e => (e.currentTarget.style.color = C.blue)}
-              onMouseLeave={e => (e.currentTarget.style.color = `${C.dark}50`)}>
-              <ArrowLeft size={14} /> Back
-            </button>
-
-            <button onClick={handleNext} disabled={!isAnswered}
-              className="flex items-center gap-2 font-black uppercase tracking-[0.2em] text-[10px] rounded-xl px-8 py-3 transition-all group"
-              style={{
-                background: isAnswered ? C.green : `${C.green}30`,
-                color: isAnswered ? C.dark : `${C.dark}50`,
-                boxShadow: isAnswered ? `0 6px 20px ${C.green}45` : "none",
-                cursor: isAnswered ? "pointer" : "not-allowed",
-                transform: "none",
-              }}
-              onMouseEnter={e => { if (isAnswered) (e.currentTarget as HTMLElement).style.transform = "scale(1.03)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}>
-              {currentStep === questions.length - 1 ? "Calculate Results" : "Next Question"}
-              <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
+  return null;
 }

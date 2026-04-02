@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
-const C = { mint: "#EFFFFB", green: "#50D890", blue: "#4F98CA", dark: "#272727" };
+const C = { mint: "#FFFDF5", green: "#50D890", blue: "#4F98CA", dark: "#272727" };
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,73 +19,64 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4 px-6 md:px-10"
+    <nav className="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-6 px-6 md:px-12"
       style={{
-        background: isScrolled ? "rgba(239,255,251,0.92)" : "rgba(239,255,251,0.5)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderBottom: isScrolled ? `1px solid rgba(80,216,144,0.25)` : "none",
-        boxShadow: isScrolled ? `0 4px 20px rgba(80,216,144,0.12)` : "none",
+        background: isScrolled ? "rgba(255,253,245,0.95)" : "transparent",
+        backdropFilter: isScrolled ? "blur(12px)" : "none",
+        WebkitBackdropFilter: isScrolled ? "blur(12px)" : "none",
+        borderBottom: isScrolled ? "1px solid rgba(0,0,0,0.05)" : "none",
       }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="relative flex items-center gap-3 group">
-          <div className="w-16 h-16 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform">
-            <Image src="/logo.png" alt="Logo" width={64} height={64} className="" />
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="flex items-center justify-center p-2 pt-1 pb-1">
+            <Image src="/logo.png" alt="Logo" width={240} height={80} className="h-12 md:h-16 w-auto object-contain" />
           </div>
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden lg:flex items-center gap-10">
           {[
-            { label: "Assessment",     href: "#quiz-section" },
-            { label: "Motivation",     href: "#motivation" },
-            { label: "Career Paths",   href: "#career-paths" },
-            // { label: "Resources",      href: "#quiz-section" },
+            { label: "Services",     href: "#services" },
+            { label: "How It Works", href: "#how-it-works" },
+            { label: "For Talents",  href: "#talents" },
+            { label: "For Clients",  href: "#clients" },
           ].map((link) => (
             <Link key={link.label} href={link.href}
-              className="text-[10px] font-bold uppercase tracking-[0.3em] transition-colors"
-              style={{ color: `${C.dark}70` }}
-              onMouseEnter={e => (e.currentTarget.style.color = C.green)}
-              onMouseLeave={e => (e.currentTarget.style.color = `${C.dark}70`)}>
+              className="text-sm font-medium transition-colors text-dark/70 hover:text-dark">
               {link.label}
             </Link>
           ))}
-          <button className="btn-primary">Join Program</button>
+          <button className="btn-primary ml-4">Contact Us</button>
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden" style={{ color: C.dark }} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        <button className="lg:hidden text-dark" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            className="absolute top-full left-0 w-full px-8 py-12 shadow-xl"
-            style={{ background: "rgba(239,255,251,0.97)", backdropFilter: "blur(20px)",
-              borderTop: `1px solid ${C.green}30` }}>
-            <div className="flex flex-col gap-8 text-center">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute top-full left-0 w-full px-6 py-8 shadow-xl bg-[#FFFDF5] border-t border-dark/5">
+            <div className="flex flex-col gap-6">
               {[
-                { label: "Assessment",   href: "#quiz-section" },
-                { label: "Motivation",   href: "#motivation" },
-                { label: "Career Paths", href: "#career-paths" },
-                // { label: "Resources",    href: "#quiz-section" },
+                { label: "Services",     href: "#services" },
+                { label: "How It Works", href: "#how-it-works" },
+                { label: "For Talents",  href: "#talents" },
+                { label: "For Clients",  href: "#clients" },
               ].map((item) => (
                 <Link key={item.label} href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-2xl font-black uppercase tracking-tighter transition-colors"
-                  style={{ color: C.dark }}
-                  onMouseEnter={e => (e.currentTarget.style.color = C.green)}
-                  onMouseLeave={e => (e.currentTarget.style.color = C.dark)}>
+                  className="text-lg font-bold text-dark">
                   {item.label}
                 </Link>
               ))}
-              <button onClick={() => setMobileMenuOpen(false)} className="btn-primary">
-                Start Assessment
+              <button onClick={() => setMobileMenuOpen(false)} className="btn-primary w-full justify-center">
+                Contact Us
               </button>
             </div>
           </motion.div>

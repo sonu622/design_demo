@@ -3,103 +3,85 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-
-const C = { mint: "#EFFFFB", green: "#50D890", blue: "#4F98CA", dark: "#272727",
-  greenDark: "#3CC478", mintDim: "#D6F8F0" };
+import { ArrowRight, Plus } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="relative pt-20 pb-10 px-6 overflow-hidden"
-      style={{ background: C.dark, borderTop: `2px solid ${C.green}30` }}>
-
-      {/* Decorative glows */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-        <div className="absolute w-[500px] h-[300px] rounded-full top-[-10%] left-[-5%] opacity-[0.07]"
-          style={{ background: `radial-gradient(circle, ${C.green}, transparent)`, filter: "blur(70px)" }} />
-        <div className="absolute w-[400px] h-[300px] rounded-full bottom-0 right-[-5%] opacity-[0.07]"
-          style={{ background: `radial-gradient(circle, ${C.blue}, transparent)`, filter: "blur(60px)" }} />
-      </div>
-
+    <footer className="pt-20 pb-8 px-6 bg-[#272727] text-white overflow-hidden relative">
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-16">
-
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-3 group mb-6">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center p-2 rotate-2 group-hover:rotate-0 transition-transform"
-                style={{ background: `linear-gradient(135deg, ${C.green}, ${C.blue})` }}>
-                <Image src="/logo.png" alt="Logo" width={28} height={28} className="object-contain" />
-              </div>
-              <span className="text-xl font-black uppercase tracking-tighter"
-                style={{ color: C.mint }}>
-                CAREER<span style={{ color: C.green }}>EDGE</span>
-              </span>
-            </Link>
-            <p className="text-sm font-medium max-w-sm mb-8 leading-relaxed"
-              style={{ color: `${C.mint}60` }}>
-              The only assessment you need to transition from where you are to where you belong.
-            </p>
-            <div className="flex gap-3">
-              {["F", "T", "L", "I"].map((social, i) => (
-                <div key={i}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-[10px] cursor-pointer transition-all hover:scale-110"
-                  style={{ background: `${C.mint}08`, border: `1px solid ${C.mint}15`,
-                    color: `${C.mint}70` }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = C.green;
-                    (e.currentTarget as HTMLElement).style.color = C.dark; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${C.mint}08`;
-                    (e.currentTarget as HTMLElement).style.color = `${C.mint}70`; }}>
-                  {social}
-                </div>
-              ))}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-12">
+          
+          {/* Brand Col */}
+          <div className="lg:col-span-5 flex flex-col items-start">
+            <div className="flex items-center gap-2 mb-8 group cursor-pointer">
+              <div className="flex items-center justify-center py-1 h-10 w-auto">
+              <Image src="/logo.png" alt="Logo" width={120} height={40} className="h-full w-auto invert brightness-200" />
             </div>
+            </div>
+            <p className="text-white/40 text-lg leading-relaxed max-w-sm mb-10">
+              NextHire is your gateway to endless career opportunities. Discover tailored job matches, connect with top employers.
+            </p>
+            <button className="bg-white text-dark font-bold px-8 py-4 rounded-2xl flex items-center gap-3 hover:scale-105 transition-transform text-[#272727]">
+              Post A Job <ArrowRight size={20} />
+            </button>
           </div>
 
-          {/* Newsletter */}
-          <div className="lg:col-span-2">
-            <div className="p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden"
-              style={{ background: `rgba(80,216,144,0.08)`, border: `1px solid ${C.green}30`,
-                boxShadow: `0 4px 24px ${C.green}10` }}>
-              <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2"
-                style={{ background: C.green }} />
-              <h3 className="text-2xl font-black mb-4 uppercase tracking-tight" style={{ color: C.mint }}>
-                Evolving Success
-              </h3>
-              <p className="text-xs font-medium mb-8 tracking-widest leading-loose max-w-sm"
-                style={{ color: `${C.mint}60` }}>
-                Get monthly insights from career architects straight to your inbox.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input type="email" placeholder="YOUR@EMAIL.COM"
-                  className="flex-1 rounded-xl px-5 py-4 text-[10px] font-bold uppercase tracking-widest outline-none transition-colors"
-                  style={{ background: `${C.mint}08`, border: `1px solid ${C.green}30`,
-                    color: C.mint }}
-                />
-                <button className="btn-primary whitespace-nowrap text-[9px]">Subscribe</button>
-              </div>
+          {/* Links Cols */}
+          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-widest text-white/30 mb-8">Quick Links</h4>
+              <ul className="flex flex-col gap-4">
+                {["About Us", "Services", "How It Works", "For Talents", "For Clients"].map((link) => (
+                  <li key={link}>
+                    <Link href="#" className="text-white/60 hover:text-white transition-colors font-medium">{link}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-widest text-white/30 mb-8">For Companies</h4>
+              <ul className="flex flex-col gap-4">
+                {["Employers", "Post Job", "Pricing", "Blog"].map((link) => (
+                  <li key={link}>
+                    <Link href="#" className="text-white/60 hover:text-white transition-colors font-medium">{link}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* Call To Action in Footer */}
+            <div className="flex flex-col items-start md:items-end">
+              <button className="relative group text-left md:text-right">
+                <div className="bg-white p-6 rounded-full shadow-2xl transition-all group-hover:scale-110 ml-auto mr-0">
+                  <ArrowRight size={32} className="text-[#272727] -rotate-45 group-hover:rotate-0 transition-transform" />
+                </div>
+                <div className="mt-4">
+                  <p className="text-2xl font-bold">Call NextHire</p>
+                </div>
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-6"
-          style={{ borderTop: `1px solid ${C.mint}10` }}>
-          <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-center md:text-left"
-            style={{ color: `${C.mint}30` }}>
-            © 2026 CAREER EDGE | BUILT FOR THE NEXT GENERATION PROFESSIONAL
-          </p>
+        {/* Bottom Socials & Rights */}
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex gap-8">
-            {["Terms", "Privacy", "Security"].map((link) => (
-              <Link key={link} href="#"
-                className="text-[9px] font-bold uppercase tracking-[0.2em] transition-colors"
-                style={{ color: `${C.mint}30` }}
-                onMouseEnter={e => (e.currentTarget.style.color = C.green)}
-                onMouseLeave={e => (e.currentTarget.style.color = `${C.mint}30`)}>
-                {link}
+            {["Instagram", "Facebook", "LinkedIn", "Twitter"].map((social) => (
+              <Link key={social} href="#" className="text-sm font-bold text-white/40 hover:text-white transition-colors">
+                {social}
               </Link>
             ))}
           </div>
+          <p className="text-sm text-white/20 font-medium">© 2026 NextHire All Rights Reserved</p>
+          <div className="flex items-center gap-2">
+             <div className="flex -space-x-2">
+                {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full border-2 border-[#272727] bg-white/10" />)}
+             </div>
+             <button className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/40">
+                <Plus size={14} />
+             </button>
+          </div>
         </div>
+
       </div>
     </footer>
   );

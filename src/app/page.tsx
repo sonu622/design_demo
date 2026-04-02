@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, CheckCircle2, ChevronRight, Play, Star, Users, Rocket, Briefcase, Brain, Globe } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronRight, Play, Star, Users, Rocket, Briefcase, Brain, Globe, X } from "lucide-react";
 import Quiz from "../components/Quiz";
 import MotivationSection from "../components/MotivationSection";
 
@@ -15,13 +15,13 @@ import MotivationSection from "../components/MotivationSection";
 ──────────────────────────────────────────────────────────────── */
 
 const C = {
-  mint:  "#EFFFFB",
+  mint:  "#FFFDF5",
   green: "#50D890",
   blue:  "#4F98CA",
   dark:  "#272727",
   greenDark: "#3CC478",
   blueDark:  "#3A7FAF",
-  mintDim:   "#D6F8F0",
+  mintDim:   "#EEF6FF",
 };
 
 export default function Home() {
@@ -36,330 +36,268 @@ export default function Home() {
     <div className="flex flex-col w-full overflow-hidden" style={{ background: C.mint }}>
 
       {/* ─── HERO ─────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-28 overflow-hidden"
-        style={{ background: `linear-gradient(145deg, ${C.mint} 0%, #D8F8F0 45%, #D4EEFF 100%)` }}>
-
-        {/* Background blobs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute w-[700px] h-[700px] rounded-full top-[-15%] left-[-12%] opacity-40"
-            style={{ background: `radial-gradient(circle, ${C.green}55, transparent 65%)`, filter: "blur(90px)", animation: "blob-pulse 16s ease-in-out infinite" }} />
-          <div className="absolute w-[600px] h-[600px] rounded-full top-[10%] right-[-12%] opacity-35"
-            style={{ background: `radial-gradient(circle, ${C.blue}55, transparent 65%)`, filter: "blur(80px)", animation: "blob-pulse 20s ease-in-out infinite 3s" }} />
-          <div className="absolute w-[450px] h-[450px] rounded-full bottom-[-5%] left-[30%] opacity-30"
-            style={{ background: `radial-gradient(circle, ${C.green}40, transparent 65%)`, filter: "blur(70px)", animation: "blob-pulse 13s ease-in-out infinite 6s" }} />
-          {/* Dot grid */}
-          <div className="absolute inset-0 opacity-[0.035]"
-            style={{ backgroundImage: `radial-gradient(circle, ${C.dark} 1px, transparent 1px)`, backgroundSize: "36px 36px" }} />
+      <section className="relative min-h-screen flex items-center pt-20 pb-20 overflow-hidden" style={{ background: C.mint }}>
+        
+        {/* Decorative elements behind hero */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute w-[800px] h-[800px] rounded-full top-[-20%] right-[-10%] opacity-[0.03]"
+            style={{ backgroundImage: `radial-gradient(circle, ${C.dark} 2px, transparent 2px)`, backgroundSize: "32px 32px" }} />
+          <div className="absolute w-[400px] h-[400px] rounded-full top-[10%] left-[20%] opacity-10"
+            style={{ background: `radial-gradient(circle, ${C.blue}30, transparent 70%)`, filter: "blur(60px)" }} />
         </div>
 
-        <div className="relative z-10 text-center max-w-5xl mx-auto px-6 pt-10">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          {/* Left: Text Content */}
+          <div className="lg:col-span-7 flex flex-col items-start pt-12 lg:pt-0">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+              className="text-7xl md:text-8xl lg:text-[7.5rem] font-bold leading-[0.9] tracking-tighter text-dark mb-8">
+              Unlock Your <br />
+              <div className="flex items-center gap-4">
+                <span className="text-dark/40 italic font-medium text-4xl lg:text-5xl ml-2">Career</span>
+                <span className="relative">
+                  Potential
+                  <div className="absolute -top-6 -right-6 w-12 h-12 rounded-full bg-blue flex items-center justify-center rotate-12 shadow-lg">
+                    <Rocket size={24} className="text-white" />
+                  </div>
+                </span>
+              </div>
+            </motion.h1>
 
-          {/* Badge */}
-          <motion.div initial={{ opacity: 0, y: -14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full mb-10 shadow-sm"
-            style={{ background: "rgba(80,216,144,0.12)", border: `1.5px solid ${C.green}60` }}>
-            <span className="w-2 h-2 rounded-full" style={{ background: C.green, boxShadow: `0 0 8px ${C.green}`, animation: "pulse 2s infinite" }} />
-            <span className="text-[10px] font-bold tracking-[0.35em] uppercase" style={{ color: C.greenDark }}>
-              Free 8-Question Career Readiness Assessment
-            </span>
-          </motion.div>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-lg text-dark/60 max-w-md mb-12 leading-relaxed">
+              Are you secretly underplaying your career potential? Get your "Career Readiness Score" in 4 minutes and reveal if you're coasting or ready to leap.
+            </motion.p>
 
-          {/* Headline */}
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-7xl md:text-9xl lg:text-[9rem] font-black tracking-tighter mb-8 leading-[0.85] uppercase"
-            style={{ color: C.dark }}>
-            OWN YOUR <br />
-            <span style={{ color: C.green, filter: `drop-shadow(0 0 28px ${C.green}60)` }}>CAREER PATH</span>
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl mb-14 max-w-3xl mx-auto leading-relaxed font-semibold uppercase tracking-tight"
-            style={{ color: `${C.dark}80` }}>
-            Discover exactly where your resume, network, interview skills, and career strategy stand — then fix the gaps fast.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-            {!showQuiz ? (
-              <>
-                <button onClick={scrollToQuiz}
-                  className="flex items-center gap-3 font-black text-sm uppercase tracking-[0.25em] transition-all hover:scale-[1.04] active:scale-[0.97] group"
-                  style={{ background: C.green, color: C.dark, padding: "1.1rem 3rem", borderRadius: "9999px",
-                    boxShadow: `0 8px 30px ${C.green}55` }}>
-                  Initiate Assessment
-                  <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-                <button className="flex items-center gap-3 font-bold text-sm uppercase tracking-[0.2em] transition-all hover:scale-[1.02]"
-                  style={{ background: `${C.blue}18`, color: C.dark, padding: "1.1rem 3rem", borderRadius: "9999px",
-                    border: `1.5px solid ${C.blue}55` }}>
-                  <Play size={17} style={{ color: C.blue }} fill="currentColor" />
-                  Methodology
-                </button>
-              </>
-            ) : (
-              <a href="#quiz-section" style={{ color: C.green }}
-                className="flex items-center gap-3 font-black uppercase tracking-[0.4em] text-sm animate-bounce">
-                PROCEED TO PROTOCOL <ArrowRight size={22} />
-              </a>
-            )}
-          </motion.div>
-
-          {/* Social proof */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55 }}
-            className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-5">
-            <div className="flex -space-x-2.5">
-              {[`${C.green}99`, `${C.blue}99`, `${C.green}CC`, `${C.blue}CC`].map((c, i) => (
-                <div key={i} className="w-9 h-9 rounded-full border-2 shadow-sm"
-                  style={{ background: c, borderColor: C.mint, zIndex: 4 - i }} />
-              ))}
-            </div>
-            <p className="text-sm" style={{ color: `${C.dark}70` }}>
-              <span className="font-bold" style={{ color: C.dark }}>25,000+</span>{" professionals assessed \u00A0·\u00A0"}
-              <span className="inline-flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => <Star key={i} size={12} fill={C.green} stroke="none" />)}
-                <span className="font-bold ml-1" style={{ color: C.dark }}>4.9</span>
-              </span>
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div animate={{ y: [0, 12, 0] }} transition={{ duration: 2.5, repeat: Infinity }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2">
-          <div className="w-7 h-12 rounded-full border-2 flex justify-center pt-2.5"
-            style={{ borderColor: `${C.green}60` }}>
-            <div className="w-1.5 h-2.5 rounded-full" style={{ background: C.green }} />
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
+              className="flex items-center gap-4">
+              <button onClick={scrollToQuiz} className="btn-primary py-5 px-10 text-lg rounded-full">
+                Get Your Score <ArrowRight className="ml-2" />
+              </button>
+            </motion.div>
           </div>
-        </motion.div>
-      </section>
 
-      {/* ─── TRUST BAR ─────────────────────────────────────────────── */}
-      <div style={{ height: 1, background: `linear-gradient(90deg, transparent, ${C.green}50 30%, ${C.blue}50 70%, transparent)` }} />
-      <div className="py-5 px-6" style={{ background: C.mintDim }}>
-        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
-          {["Resume & ATS Optimisation", "Interview Prep Frameworks", "Salary Negotiation Tactics", "LinkedIn & Personal Branding"].map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <CheckCircle2 size={12} style={{ color: C.green }} />
-              <span className="text-xs font-semibold tracking-wide" style={{ color: `${C.dark}80` }}>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div style={{ height: 1, background: `linear-gradient(90deg, transparent, ${C.blue}40 30%, ${C.green}40 70%, transparent)` }} />
+          {/* Right: Person & Floating Cards */}
+          <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }}
+              className="relative w-full max-w-[480px]">
+              {/* Image Container */}
+              <div className="relative z-10 w-full aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl">
+                <Image src="/professional-hero.png" alt="Candidate" fill className="object-cover" priority />
+              </div>
 
-      {/* ─── QUIZ SECTION ──────────────────────────────────────────── */}
-      <section id="quiz-section" className="py-32 px-6 relative overflow-hidden" style={{ background: C.mint }}>
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute w-[500px] h-[500px] rounded-full top-[-10%] right-[-8%] opacity-25"
-            style={{ background: `radial-gradient(circle, ${C.blue}88, transparent 70%)`, filter: "blur(80px)" }} />
-          <div className="absolute w-[400px] h-[400px] rounded-full bottom-[-5%] left-[-5%] opacity-20"
-            style={{ background: `radial-gradient(circle, ${C.green}88, transparent 70%)`, filter: "blur(70px)" }} />
-        </div>
-
-        <div className="max-w-4xl mx-auto relative z-10">
-          <AnimatePresence mode="wait">
-            {showQuiz ? (
-              <motion.div key="quiz" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.6 }}>
-                <Quiz />
+              {/* Floating Card: Companies Joined */}
+              <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -left-12 top-1/4 z-20 bg-blue p-5 rounded-3xl shadow-2xl text-white min-w-[140px]">
+                <p className="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-1">Companies Joined</p>
+                <p className="text-3xl font-bold">500+</p>
               </motion.div>
-            ) : (
-              <motion.div key="placeholder" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                className="text-center p-16 rounded-[3rem] relative overflow-hidden"
-                style={{ background: `linear-gradient(135deg, ${C.blue}22 0%, ${C.blue}12 100%)`,
-                  border: `1.5px solid ${C.blue}45`, boxShadow: `0 20px 60px ${C.blue}20` }}>
-                <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-20 pointer-events-none"
-                  style={{ background: `radial-gradient(circle, ${C.green}, transparent)`, transform: "translate(30%,-30%)", filter: "blur(40px)" }} />
 
-                <div className="w-24 h-24 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-xl"
-                  style={{ background: `linear-gradient(135deg, ${C.green}, ${C.greenDark})` }}>
-                  <CheckCircle2 size={44} color={C.dark} />
-                </div>
-
-                <h2 className="text-4xl md:text-7xl font-black mb-6 uppercase tracking-tighter"
-                  style={{ color: C.dark }}>
-                  Career <br />
-                  <span style={{ color: C.blue }}>Assessment</span>
-                </h2>
-                <p className="text-lg mb-10 max-w-xl mx-auto font-semibold tracking-tight uppercase"
-                  style={{ color: `${C.dark}70` }}>
-                  8 targeted questions. 5 minutes. A clear picture of your resume, network, interview readiness, and career strategy.
-                </p>
-                <button onClick={() => setShowQuiz(true)} className="btn-primary">
-                  Begin Assessment
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
-
-      {/* ─── MOTIVATION ────────────────────────────────────────────── */}
-      <MotivationSection />
-
-      {/* ─── BEYOND LIMITATION ─────────────────────────────────────── */}
-      <section id="career-paths" className="py-32 px-6 relative overflow-hidden"
-        style={{ background: `linear-gradient(170deg, ${C.mintDim} 0%, ${C.mint} 100%)` }}>
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute w-[450px] h-[450px] rounded-full bottom-0 left-[-5%] opacity-25"
-            style={{ background: `radial-gradient(circle, ${C.green}66, transparent)`, filter: "blur(70px)" }} />
-        </div>
-
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center relative z-10">
-          {/* Left */}
-          <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }} viewport={{ once: true }}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-6"
-              style={{ background: `${C.green}18`, border: `1px solid ${C.green}50`, color: C.greenDark }}>
-              Beyond Limitation
-            </span>
-            <h2 className="text-5xl md:text-7xl font-black mb-8 leading-[0.85] uppercase tracking-tighter"
-              style={{ color: C.dark }}>
-              YOUR CAREER <br />
-              <span style={{ color: C.blue }}>TOOLKIT</span>
-            </h2>
-            <p className="text-xl mb-12 leading-relaxed font-semibold uppercase tracking-tight max-w-md"
-              style={{ color: `${C.dark}60` }}>
-              Most professionals guess their way through job searches. We give you a data-driven plan — from resume to offer letter.
-            </p>
-            <div className="grid grid-cols-1 gap-5">
-              {[
-                { title: "Resume & Interviews", desc: "ATS-optimised templates and STAR-method interview coaching.", icon: Briefcase },
-                { title: "Job Search Strategy", desc: "Targeted company lists, cold outreach scripts, and recruiter tactics.", icon: Rocket },
-              ].map((item, i) => (
-                <motion.div key={i} whileHover={{ x: 6 }}
-                  className="flex gap-6 p-7 rounded-2xl transition-all group"
-                  style={{ background: "rgba(255,255,255,0.7)", border: `1px solid ${C.green}30`,
-                    boxShadow: `0 4px 20px ${C.green}15` }}>
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform"
-                    style={{ background: `linear-gradient(135deg, ${C.green}40, ${C.blue}40)` }}>
-                    <item.icon size={26} style={{ color: C.dark }} />
+              {/* Floating Card: Apply Easily */}
+              <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute -left-8 bottom-12 z-20 bg-white p-5 rounded-3xl shadow-xl border border-dark/5 min-w-[180px]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue/10 flex items-center justify-center">
+                    <Rocket size={20} className="text-blue" />
                   </div>
                   <div>
-                    <h4 className="font-black text-lg mb-1 uppercase tracking-tight" style={{ color: C.dark }}>{item.title}</h4>
-                    <p className="text-sm font-semibold uppercase tracking-widest" style={{ color: `${C.dark}60` }}>{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Testimonial */}
-          <motion.div initial={{ opacity: 0, scale: 0.94 }} whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.8 }}
-            className="relative rounded-[3rem] overflow-hidden shadow-2xl p-[2px]"
-            style={{ background: `linear-gradient(135deg, ${C.green}, ${C.blue})` }}>
-            <div className="rounded-[2.8rem] min-h-[480px] flex flex-col justify-between overflow-hidden relative p-10"
-              style={{ background: `linear-gradient(160deg, ${C.mint} 0%, #E0F8F0 100%)` }}>
-              <Image src="/hero-bg.png" alt="Background" fill className="object-cover opacity-[0.04] grayscale" />
-
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="flex gap-2 mb-6">
-                  {[C.green, C.blue, `${C.green}80`].map((c, i) => (
-                    <div key={i} className="w-3 h-3 rounded-full" style={{ background: c }} />
-                  ))}
-                </div>
-                <div className="flex-grow flex flex-col justify-center py-4">
-                  <div className="text-7xl leading-none mb-3 select-none font-black" style={{ color: `${C.green}60` }}>&ldquo;</div>
-                  <p className="text-xl leading-snug mb-8 font-semibold" style={{ color: C.dark }}>
-                    The protocol revealed structural weaknesses in my career plan I hadn&apos;t considered.
-                    Essential for any serious builder.
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold"
-                      style={{ background: `linear-gradient(135deg, ${C.green}, ${C.blue})`, color: C.dark }}>JD</div>
-                    <div>
-                      <p className="font-bold text-sm" style={{ color: C.dark }}>John Doe</p>
-                      <p className="text-xs mt-0.5" style={{ color: `${C.dark}60` }}>Lead Architect @ Meta</p>
-                    </div>
-                    <div className="ml-auto flex gap-0.5">
-                      {[...Array(5)].map((_, i) => <Star key={i} size={13} fill={C.green} stroke="none" />)}
-                    </div>
+                    <p className="text-[11px] font-bold text-dark">Apply Easily</p>
+                    <p className="text-[9px] text-dark/50">Grow Your Career Daily</p>
                   </div>
                 </div>
-                <div className="mt-6 pt-6 grid grid-cols-3 gap-4"
-                  style={{ borderTop: `1px solid ${C.green}30` }}>
-                  {[{ val: "98%", label: "Success Rate" }, { val: "4.9★", label: "Rating" }, { val: "25k+", label: "Users" }].map((s, i) => (
-                    <div key={i} className="text-center">
-                      <div className="text-2xl font-black" style={{ color: C.blue }}>{s.val}</div>
-                      <div className="text-xs mt-0.5" style={{ color: `${C.dark}60` }}>{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ─── STATS ─────────────────────────────────────────────────── */}
-      <section className="py-24 relative overflow-hidden" style={{ background: C.dark }}>
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute w-80 h-80 rounded-full top-[-10%] left-[10%] opacity-10"
-            style={{ background: `radial-gradient(circle, ${C.green}, transparent)`, filter: "blur(60px)" }} />
-          <div className="absolute w-64 h-64 rounded-full bottom-[-10%] right-[10%] opacity-10"
-            style={{ background: `radial-gradient(circle, ${C.blue}, transparent)`, filter: "blur(50px)" }} />
-        </div>
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center relative z-10">
-          {[
-            { label: "Professionals Assessed", value: "25k+", icon: Users,  color: C.green },
-            { label: "Got Interviews ≤30 Days",  value: "78%",  icon: Rocket, color: C.blue },
-            { label: "Avg. Salary Increase",     value: "$18k", icon: Brain,  color: C.green },
-            { label: "Countries Served",         value: "42+",  icon: Globe,  color: C.blue },
-          ].map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -10 }} className="flex flex-col items-center gap-4 group">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-2 group-hover:scale-110 transition-transform"
-                style={{ background: `${stat.color}22`, border: `1px solid ${stat.color}44` }}>
-                <stat.icon size={28} style={{ color: stat.color }} />
-              </div>
-              <div className="text-5xl font-black" style={{ color: stat.color }}>{stat.value}</div>
-              <div className="text-xs font-semibold tracking-widest uppercase" style={{ color: `${C.mint}70` }}>{stat.label}</div>
+              </motion.div>
             </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─── CTA ───────────────────────────────────────────────────── */}
-      <section className="py-28 px-6 relative overflow-hidden"
-        style={{ background: `linear-gradient(160deg, ${C.blue}18 0%, ${C.green}12 100%)`, borderTop: `1px solid ${C.green}25` }}>
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute w-[500px] h-[500px] rounded-full top-[-10%] right-[-5%] opacity-20"
-            style={{ background: `radial-gradient(circle, ${C.blue}, transparent 70%)`, filter: "blur(80px)" }} />
-          <div className="absolute w-[400px] h-[400px] rounded-full bottom-[-5%] left-[5%] opacity-20"
-            style={{ background: `radial-gradient(circle, ${C.green}, transparent 70%)`, filter: "blur(70px)" }} />
-        </div>
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-8"
-            style={{ background: `${C.green}18`, border: `1px solid ${C.green}40`, color: C.greenDark }}>
-            Take Control
-          </span>
-          <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-5xl md:text-8xl font-black mb-6 leading-[0.85] uppercase tracking-tighter"
-            style={{ color: C.dark }}>
-            LAND YOUR <br />
-            <span style={{ color: C.blue }}>DREAM ROLE</span>
-          </motion.h2>
-          <p className="text-lg mb-12 leading-relaxed font-semibold uppercase tracking-tight"
-            style={{ color: `${C.dark}70` }}>
-            Take the free 8-question assessment, get your career readiness score, and receive a personalised action plan in under 5 minutes.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={scrollToQuiz} className="btn-primary flex items-center justify-center gap-3">
-              Start Protocol Now <ArrowRight size={18} />
-            </button>
-            <button className="btn-secondary">Learn More</button>
           </div>
-          <p className="text-xs mt-8 flex items-center justify-center gap-2" style={{ color: `${C.dark}60` }}>
-            <CheckCircle2 size={13} style={{ color: C.green }} />
-            Free assessment · No credit card required · Results in 5 minutes
-          </p>
+
         </div>
       </section>
 
+      {/* ─── TRUST BAR (Simplified) ─────────────────────────────────── */}
+      <div className="py-2 px-6 border-b border-dark/5" style={{ background: C.mint }}>
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-12 py-4">
+          <span className="text-dark/20 font-black text-2xl tracking-widest uppercase">NextHire</span>
+          <div className="h-4 w-px bg-dark/10" />
+          <span className="text-dark/20 font-black text-2xl tracking-widest uppercase italic">TalentX</span>
+          <div className="h-4 w-px bg-dark/10" />
+          <span className="text-dark/20 font-black text-2xl tracking-widest uppercase">CareerEdge</span>
+        </div>
+      </div>
+
+      {/* ─── EXPLORE OPPORTUNITIES ──────────────────────────────────── */}
+
+      {/* ─── CONNECTING PEOPLE (TEAM VISUALS) ────────────────────────── */}
+      <section className="py-32 px-6 border-t border-dark/5" style={{ background: C.mint }}>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+          
+          {/* Left: Team Photo */}
+          <div className="lg:col-span-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              className="relative aspect-[4/3] rounded-[4rem] overflow-hidden shadow-[0_32px_80px_rgba(39,39,39,0.1)]">
+              <Image src="/team-collaboration.png" alt="Team Discussion" fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/20 to-transparent" />
+            </motion.div>
+          </div>
+
+          {/* Right: Content & Stats */}
+          <div className="lg:col-span-6 flex flex-col gap-10">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              <h2 className="text-6xl font-bold text-dark mb-8 tracking-tighter leading-tight italic uppercase">
+                Connecting People <br /> 
+                <span className="text-blue">With Purpose</span>
+              </h2>
+              <p className="text-xl text-dark/60 leading-relaxed font-medium mb-8">
+                We bridge the gap between world-class talent and industry-leading employers. 
+                Our platform isn't just about jobs — it's about the right match, at the right time.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 gap-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                className="bg-white p-10 rounded-[3rem] shadow-xl border border-dark/5 overflow-hidden group">
+                <p className="text-6xl font-black mb-2 text-blue group-hover:scale-110 transition-transform origin-left">92%</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] font-black text-dark/30">Success Rate</p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                className="bg-dark text-white p-10 rounded-[3rem] shadow-2xl overflow-hidden group">
+                <p className="text-6xl font-black mb-2 text-green group-hover:scale-110 transition-transform origin-left">50K</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] font-black text-white/30">Opportunities</p>
+              </motion.div>
+            </div>
+            
+            <button onClick={scrollToQuiz} className="btn-primary w-fit px-12 py-5 rounded-full text-lg shadow-2xl mt-4">
+              Join The Network <ChevronRight className="ml-2" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WORLD-CLASS TALENT ─────────────────────────────────────── */}
+      <section id="talents" className="py-32 px-6 border-t border-dark/5" style={{ background: C.mint }}>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl font-bold text-center text-dark mb-20 tracking-tighter max-w-4xl mx-auto leading-tight">
+            Discover World-Class Talent Ready To <br /> Elevate Your Projects To The Next Level
+          </h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Profile Card */}
+            <div className="lg:col-span-4 bg-white p-6 rounded-[2.5rem] shadow-xl border border-dark/5">
+              <div className="relative w-full aspect-square rounded-3xl overflow-hidden mb-6">
+                <Image src="/profile-raoul.png" alt="Raoul Fresne" fill className="object-cover" />
+              </div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-2.5 h-2.5 rounded-full bg-green animate-pulse" />
+                <span className="text-xs font-bold text-dark/40 uppercase tracking-wider">Available For Work</span>
+              </div>
+              <h3 className="text-3xl font-bold text-dark mb-1">Raoul Fresne</h3>
+              <p className="text-sm text-dark/40 mb-6 font-medium">Dedicated to crafting intuitive and impactful digital experiences.</p>
+              <button className="btn-primary w-full justify-center group">
+                Contact Me <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+
+            {/* Talent Details */}
+            <div className="lg:col-span-8 flex flex-col gap-12 pl-0 lg:pl-12">
+              <p className="text-dark/50 text-lg leading-relaxed max-w-2xl font-medium">
+                Connect with vetted professionals who bring expertise, creativity, and dedication to your team. Finding the perfect match has never been easier.
+              </p>
+              
+              <div className="flex flex-wrap gap-3">
+                {["Figma", "Prototyping", "Design Systems", "Interaction Design", "Wireframing", "UI Design", "User Research", "Usability Testing"].map((tag, i) => (
+                  <span key={i} className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all cursor-default shadow-sm border border-dark/5 ${tag === "UI Design" ? "bg-blue text-white" : "bg-white text-dark/60 hover:bg-dark/5"}`}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex flex-col border-t border-dark/5 pt-8">
+                {[
+                  { title: "Product Designer", year: "2023" },
+                  { title: "UI/UX Designer", year: "2020", active: true },
+                  { title: "Junior Visual Designer", year: "2018" }
+                ].map((role, i) => (
+                  <div key={i} className={`flex items-center justify-between py-6 border-b border-dark/5 group transition-all ${role.active ? "opacity-100" : "opacity-40 hover:opacity-70"}`}>
+                    <span className="text-xl font-bold text-dark">{role.title}</span>
+                    <span className="text-sm font-bold text-dark/40">{role.year}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── STEP-BY-STEP GUIDE ─────────────────────────────────────── */}
+      <section id="how-it-works" className="py-32 px-6" style={{ background: C.mint }}>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl font-bold text-center text-dark mb-24 tracking-tighter">
+            A Step-By-Step Guide To How Our Job <br /> Platform Works For You
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { title: "Search Jobs", desc: "Browse thousands of roles and take the next step in your career.", icon: Globe },
+              { title: "Apply Easily", desc: "Easily submit your applications and get closer to your dream job.", icon: Briefcase },
+              { title: "Get Hired", desc: "Take the next step toward landing your dream career.", icon: Rocket },
+            ].map((step, i) => (
+              <div key={i} className="bg-white p-12 rounded-[3.5rem] shadow-lg border border-dark/5 text-center group hover:scale-[1.02] transition-all">
+                <div className="w-20 h-20 rounded-[2.5rem] bg-mint flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                  <step.icon size={32} className="text-blue" />
+                </div>
+                <h4 className="text-2xl font-bold text-dark mb-4">{step.title}</h4>
+                <p className="text-sm text-dark/40 leading-relaxed font-medium">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── READY TO TAKE THE NEXT STEP (VIDEO BACKGROUND) ───────────── */}
+      <section className="relative py-40 px-6 overflow-hidden">
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 grayscale-[0.2] brightness-50">
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-business-man-walking-along-a-glass-wall-25807-large.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-dark/40 backdrop-blur-[1px] z-10" />
+        
+        <div className="relative z-20 max-w-5xl mx-auto text-center">
+           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+             <h2 className="text-7xl md:text-[9rem] font-black text-white mb-8 tracking-tighter leading-[0.8] italic uppercase drop-shadow-2xl">
+               READY FOR <br />
+               <span className="text-blue/80 shimmer">BEYOND?</span>
+             </h2>
+             <p className="text-xl text-white/60 mb-12 max-w-xl mx-auto font-bold uppercase tracking-tight">
+               Your career isn't just a job. It's a series of strategic leaps. Take yours today.
+             </p>
+             <button onClick={scrollToQuiz} className="bg-white text-dark font-black px-12 py-6 rounded-full hover:scale-105 transition-transform text-xl shadow-[0_0_50px_rgba(255,255,255,0.2)]">
+               GET YOUR SCORE NOW
+             </button>
+           </motion.div>
+        </div>
+      </section>
+
+      {/* ─── ASSESSMENT (HIDDEN BY DEFAULT) ────────────────────────── */}
+      <AnimatePresence>
+        {showQuiz && (
+          <section id="quiz-section" className="fixed inset-0 z-[100] bg-dark/40 backdrop-blur-xl overflow-y-auto pt-10 pb-20 px-6">
+            <div className="max-w-5xl mx-auto relative z-10">
+              <motion.div key="quiz" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }} className="bg-[#FFFDF5] rounded-[4rem] shadow-2xl border border-dark/10 overflow-hidden">
+                <div className="flex justify-between items-center p-8 border-b border-dark/5 bg-white">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue flex items-center justify-center text-white">
+                      <Rocket size={18} />
+                    </div>
+                    <h2 className="text-xl font-bold text-dark tracking-tighter">CAREER READINESS PROTOCOL <span className="text-blue/40 ml-2">v1.2</span></h2>
+                  </div>
+                  <button onClick={() => setShowQuiz(false)} className="bg-dark text-white p-3 rounded-full hover:scale-105 transition-transform">
+                    <X size={20} />
+                  </button>
+                </div>
+                <Quiz />
+              </motion.div>
+            </div>
+          </section>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
