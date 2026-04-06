@@ -37,17 +37,17 @@ export default function Navbar() {
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-10">
           {[
-            { label: "Services",     href: "#services" },
-            { label: "How It Works", href: "#how-it-works" },
-            { label: "For Talents",  href: "#talents" },
-            { label: "For Clients",  href: "#clients" },
+            { label: "Services",     href: "/#services" },
+            { label: "How It Works", href: "/#how-it-works" },
+            { label: "For Talents",  href: "/#talents" },
+            { label: "For Clients",  href: "/#clients" },
           ].map((link) => (
             <Link key={link.label} href={link.href}
               className="text-sm font-medium transition-colors text-dark/70 hover:text-dark">
               {link.label}
             </Link>
           ))}
-          <button className="btn-primary ml-4">Contact Us</button>
+          <Link href="/contact" className="btn-primary ml-4">Contact Us</Link>
         </div>
 
         {/* Mobile Toggle */}
@@ -64,10 +64,10 @@ export default function Navbar() {
             className="absolute top-full left-0 w-full px-6 py-8 shadow-xl bg-[#FFFDF5] border-t border-dark/5">
             <div className="flex flex-col gap-6">
               {[
-                { label: "Services",     href: "#services" },
-                { label: "How It Works", href: "#how-it-works" },
-                { label: "For Talents",  href: "#talents" },
-                { label: "For Clients",  href: "#clients" },
+                { label: "Services",     href: "/#services" },
+                { label: "How It Works", href: "/#how-it-works" },
+                { label: "For Talents",  href: "/#talents" },
+                { label: "For Clients",  href: "/#clients" },
               ].map((item) => (
                 <Link key={item.label} href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
@@ -75,9 +75,9 @@ export default function Navbar() {
                   {item.label}
                 </Link>
               ))}
-              <button onClick={() => setMobileMenuOpen(false)} className="btn-primary w-full justify-center">
+              <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="btn-primary w-full justify-center">
                 Contact Us
-              </button>
+              </Link>
             </div>
           </motion.div>
         )}

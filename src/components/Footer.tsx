@@ -31,9 +31,9 @@ export default function Footer() {
             <div>
               <h4 className="text-sm font-bold uppercase tracking-widest text-white/30 mb-8">Quick Links</h4>
               <ul className="flex flex-col gap-4">
-                {["About Us", "Services", "How It Works", "For Talents", "For Clients"].map((link) => (
+                {["About Us", "Services", "How It Works", "For Talents", "For Clients", "Contact"].map((link) => (
                   <li key={link}>
-                    <Link href="#" className="text-white/60 hover:text-white transition-colors font-medium">{link}</Link>
+                    <Link href={link === "Contact" ? "/contact" : "#"} className="text-white/60 hover:text-white transition-colors font-medium">{link}</Link>
                   </li>
                 ))}
               </ul>

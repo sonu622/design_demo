@@ -171,60 +171,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── WORLD-CLASS TALENT ─────────────────────────────────────── */}
-      <section id="talents" className="py-32 px-6 border-t border-dark/5" style={{ background: C.mint }}>
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-bold text-center text-dark mb-20 tracking-tighter max-w-4xl mx-auto leading-tight">
-            Discover World-Class Talent Ready To <br /> Elevate Your Projects To The Next Level
-          </h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            {/* Profile Card */}
-            <div className="lg:col-span-4 bg-white p-6 rounded-[2.5rem] shadow-xl border border-dark/5">
-              <div className="relative w-full aspect-square rounded-3xl overflow-hidden mb-6">
-                <Image src="/profile-raoul.png" alt="Raoul Fresne" fill className="object-cover" />
-              </div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2.5 h-2.5 rounded-full bg-green animate-pulse" />
-                <span className="text-xs font-bold text-dark/40 uppercase tracking-wider">Available For Work</span>
-              </div>
-              <h3 className="text-3xl font-bold text-dark mb-1">Raoul Fresne</h3>
-              <p className="text-sm text-dark/40 mb-6 font-medium">Dedicated to crafting intuitive and impactful digital experiences.</p>
-              <button className="btn-primary w-full justify-center group">
-                Contact Me <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
 
-            {/* Talent Details */}
-            <div className="lg:col-span-8 flex flex-col gap-12 pl-0 lg:pl-12">
-              <p className="text-dark/50 text-lg leading-relaxed max-w-2xl font-medium">
-                Connect with vetted professionals who bring expertise, creativity, and dedication to your team. Finding the perfect match has never been easier.
-              </p>
-              
-              <div className="flex flex-wrap gap-3">
-                {["Figma", "Prototyping", "Design Systems", "Interaction Design", "Wireframing", "UI Design", "User Research", "Usability Testing"].map((tag, i) => (
-                  <span key={i} className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all cursor-default shadow-sm border border-dark/5 ${tag === "UI Design" ? "bg-blue text-white" : "bg-white text-dark/60 hover:bg-dark/5"}`}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-col border-t border-dark/5 pt-8">
-                {[
-                  { title: "Product Designer", year: "2023" },
-                  { title: "UI/UX Designer", year: "2020", active: true },
-                  { title: "Junior Visual Designer", year: "2018" }
-                ].map((role, i) => (
-                  <div key={i} className={`flex items-center justify-between py-6 border-b border-dark/5 group transition-all ${role.active ? "opacity-100" : "opacity-40 hover:opacity-70"}`}>
-                    <span className="text-xl font-bold text-dark">{role.title}</span>
-                    <span className="text-sm font-bold text-dark/40">{role.year}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ─── STEP-BY-STEP GUIDE ─────────────────────────────────────── */}
       <section id="how-it-works" className="py-32 px-6" style={{ background: C.mint }}>
